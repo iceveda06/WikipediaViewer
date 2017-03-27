@@ -8,31 +8,25 @@
     <title></title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 
 <body>
     <div class="container">
-    <div>
-    <form id = "searchForm">
-        <input id ="search" type="text" />
-        <input type="submit">
-    </form>
-
+   
+            <form id="searchForm">
+                <div class="toprow">
+                <!--<div class="searchBox">-->
+                <label for="search-input"></label>
+                <input class = "searchBox" id="search" type="text" placeholder="Search Wikipedia" >
+                <!--<input class="btn btn-default glyphicon-search" type="submit">-->
+                <button class="btn btn-default glyphicon glyphicon-search"></button>
+                <button class="btn  btn-default glyphicon glyphicon-random"></button>
+                </div>
+            </form>
+        <div id="results"></div>
     </div>
-
-		
-	
-        <div class="row text-center">
-            <div class="col-md-12">
-                <button>Random Wikipedia Page</button>
-            </div>
-        </div>
-
-         <p></p>
-    </div>
-
-
     <!-- latest JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->

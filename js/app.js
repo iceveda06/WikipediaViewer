@@ -1,45 +1,50 @@
-//  GOAL: 
+//  GOAL:
 
-//  1.  Search Wikipedia entries in a search box 
+//  1.  Search Wikipedia entries in a search box
 //  and see the resulting Wikipedia entries
 // 		a.  Here is Wikipedia API:  https://www.mediawiki.org/wiki/API:Main_page
 
 // 2.  Click on a button to see random Wikipedia entries   ***DONE
-// 		a. https://en.wikipedia.org/wiki/Special:Random gives you 
+// 		a. https://en.wikipedia.org/wiki/Special:Random gives you
 // 		random Wikipedia site
 
+/* TODO
+clear search box - put an x
+put random icon and search icon next to search box - remove submit
+show past history - past 5
+*/
 
-// use: https://en.wikipedia.org/wiki/Special:ApiSandbox#action=query&format=json&list=search&utf8=1&srsearch=Albert+Einstein
-//https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrsearch=galatasaray&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max
-// save the search input into variable and create a url
-
-// collect the result in an array/object then loop through them to append to DOM
 var value = "";
-var snippet = "";
+var snippet = [];
+var divsToAppend = "";
+var titleToAppend = "";
+var searchWord = "";
+
 $(document).ready(function() {
     //Get city name
-    var form = document.getElementById('searchForm');
-    form.addEventListener('submit', function(e) {
+    $(".glyphicon-search").on("click", function(e) {
         e.preventDefault(); // Prevent normal form submission
-        var value = document.getElementById('search').value;
-        // console.log(value);
-        var urli = "https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrsearch=" + value + '&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max' + '&callback=?'
-        console.log(urli);
-       
-        $.getJSON("https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&utf8=1&srsearch=" + value + '&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max' + '&callback=?', function(locate) {
-//            var liToAppend = "";
-//            console.log(value);
-//            for (var i = 0; i < locate.query.pages.pageid[i].length; i++) {
-//            // snippet = locate.query.search[i].snippet;
-//            liToAppend += '<li id = "list"' + (i) + '">' + locate.query.pageid[i].extract + '</li>';
-//
-//          }
-//          $("p").html(liToAppend);
-            console.log(locate.query.pages.404787['extract']);
-            
+        var value = $('#search').val();
+        var urli = "https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrsearch=" + value + '&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&indexpageids=' + '&callback=?';
+            $.getJSON("https://en.wikipedia.org/w/api.php?format=json&action=query&generator=search&gsrnamespace=0&gsrsearch=" + value + '&gsrlimit=10&prop=pageimages|extracts&pilimit=max&exintro&explaintext&exsentences=1&exlimit=max&indexpageids=' + '&callback=?', function(locate) {
+                var snippet = locate.query["pageids"];
+                    for (var i = 0; i < snippet.length; i++) {
+                    divsToAppend += '<a target="_blank" href = https://en.wikipedia.org/?curid=' + snippet[i] + '>' + '<div class = "result' + /*(i) +*/ '">' + '<span class="title">' + locate.query.pages[snippet[i]].title + '</span>' + '<br>' + '<br>' + '<li id = "list' + (i) + '">' + locate.query.pages[snippet[i]]["extract"] + '</li>' + '</a>' + '</div>';
+                    }
+                $("#results").html(divsToAppend);
+            });
+                // $("#results").html(divsToAppend);
+
     });
-});
-$("button").click(function(){
-    	window.open(["https://en.wikipedia.org/wiki/Special:Random"]);
+
+    $(".glyphicon-random").click(function() {
+        window.open(["https://en.wikipedia.org/wiki/Special:Random"]);
     });
+
+    //erase search term when clicked on Search Box
+    $("input[type='text']").mousedown(function(event){
+        $(this).val("");
+        $("#results").html("");
+    })
+
 });
